@@ -1,0 +1,9 @@
+# Contraseñas locales
+db.properties
+
+# Maven y binarios
+target/
+.idea/
+.vscode/
+nbproject/private/
+*.class
