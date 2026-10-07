@@ -82,7 +82,8 @@ CREATE TABLE Prestamos (
     FechaLimite DATE NOT NULL, 
     Estado NVARCHAR(20) NOT NULL,
     CONSTRAINT PK_Prestamos PRIMARY KEY (IdPrestamo),
-    CONSTRAINT FK_Prestamos_Empleados FOREIGN KEY (IdEmpleado) REFERENCES Empleados(IdEmpleado)
+    CONSTRAINT FK_Prestamos_Empleados FOREIGN KEY (IdEmpleado) REFERENCES Empleados(IdEmpleado),
+    CONSTRAINT CK_Prestamos_Estado CHECK (Estado IN ('Abierto', 'Cerrado'))
 );
 
 CREATE TABLE DetallePrestamo (
