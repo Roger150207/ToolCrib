@@ -91,6 +91,7 @@ CREATE TABLE DetallePrestamo (
     IdArticulo INT NOT NULL,
     Cantidad INT NOT NULL,
     EstadoDevolucion NVARCHAR(50),
+    CONSTRAINT CK_DetallePrestamo_EstadoDevolucion CHECK (EstadoDevolucion IN ('Pendiente', 'Devuelto', 'Danado', 'Extraviado')),
     CONSTRAINT PK_DetallePrestamo PRIMARY KEY (IdPrestamo, IdArticulo),
     CONSTRAINT FK_DetallePrestamo_Prestamos FOREIGN KEY (IdPrestamo) REFERENCES Prestamos(IdPrestamo),
     CONSTRAINT FK_DetallePrestamo_Articulos FOREIGN KEY (IdArticulo) REFERENCES Articulos(IdArticulo)
