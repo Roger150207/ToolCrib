@@ -4,6 +4,7 @@
  */
 package com.toolcrib.dao;
 import com.toolcrib.config.ConexionBD;
+import com.toolcrib.excepcion.StockInsuficienteException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 
 public class PrestamoDAO {
 
-    public void registrarPrestamo(int idEmpleado, Date fechaLimite, int idArticulo, int cantidad) throws SQLException {
+    public void registrarPrestamo(int idEmpleado, Date fechaLimite, int idArticulo, int cantidad) throws StockInsuficienteException, SQLException {
         String sql = "{call SP_RegistrarPrestamo(?, ?, ?, ?)}";
 
         try (Connection con = ConexionBD.getConexion();
@@ -25,6 +26,14 @@ public class PrestamoDAO {
 
             // No es un SELECT, solo lo ejecuto
             cs.execute();
+        }
+        
+        // Para los errores cunaod ya no haya stock
+        catch (SQLException e) {
+        if (e.getMessage().contains("Stock insuficiente")) {
+            throw new StockInsuficienteException(e.getMessage());
+        }
+        throw e; // si es otro error, lo dejo pasar normal
         }
     }
     

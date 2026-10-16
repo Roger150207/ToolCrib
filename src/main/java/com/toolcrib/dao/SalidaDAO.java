@@ -5,17 +5,19 @@
 package com.toolcrib.dao;
 
 import com.toolcrib.config.ConexionBD;
+import com.toolcrib.excepcion.StockInsuficienteException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+
 
 /**
  *
  * @author rogeer
  */
 public class SalidaDAO {
-    public void registrarSalida(int idEmpleado, int idArea , String motivo, int idArticulo, int cantidad) throws SQLException {
+    public void registrarSalida(int idEmpleado, int idArea , String motivo, int idArticulo, int cantidad) throws StockInsuficienteException, SQLException {
         String sql = "{call SP_RegistrarSalida(?, ?, ?, ?, ?)}";
 
         try (Connection con = ConexionBD.getConexion();
@@ -29,6 +31,13 @@ public class SalidaDAO {
             cs.setInt(5, cantidad);
 
             cs.execute();
+        }
+        
+        catch (SQLException e) {
+        if (e.getMessage().contains("Stock insuficiente")) {
+            throw new StockInsuficienteException(e.getMessage());
+        }
+        throw e; // si es otro error, lo dejo pasar normal
         }
     }
     

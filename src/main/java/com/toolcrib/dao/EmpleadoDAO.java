@@ -40,4 +40,76 @@ public class EmpleadoDAO implements DAO<Empleado>{
 
         return lista;
     }
+    
+    // Metodo para insertar a un nuevo empelado
+    public void insertar(Empleado e) throws SQLException{
+        String sql = "INSERT INTO Empleados (NumEmpleado, Nombre, Turno, Activo, IdArea) VALUES (?, ?, ?, ?, ?)";
+        try (Connection con = ConexionBD.getConexion();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, e.getNumEmpleado());
+            ps.setString(2, e.getNombre());
+            ps.setInt(3, e.getTurno());
+            ps.setBoolean(4, e.isActivo());
+            ps.setInt(5, e.getIdArea());
+
+            ps.executeUpdate(); 
+        }
+    }
+    
+    // Metodo para buscar a un empelado mediante ID 
+    public Empleado buscarPorId(int id) throws SQLException{
+        String sql = "SELECT * FROM Empleados WHERE IdEmpleado = ?";
+        
+        try (Connection con = ConexionBD.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Empleado empleado = new Empleado();
+                    empleado.setIdEmpleado(rs.getInt("IdEmpleado"));
+                    empleado.setNumEmpleado(rs.getString("NumEmpleado"));
+                    empleado.setNombre(rs.getString("Nombre"));
+                    empleado.setTurno(rs.getInt("Turno"));
+                    empleado.setActivo(rs.getBoolean("Activo"));
+                    empleado.setIdArea(rs.getInt("IdArea"));
+                    return empleado;
+                }
+            }
+        }
+
+        return null; // no encontro nada
+    }
+    
+    // Metodo que uso para actualiza info de un empelado 
+    public void actualizar(Empleado e) throws SQLException {
+        String sql = "UPDATE Empleados SET NumEmpleado = ?, Nombre = ?, Turno = ?, Activo = ?, IdArea = ? WHERE IdEmpleado = ?";
+
+            try (Connection con = ConexionBD.getConexion();
+                 PreparedStatement ps = con.prepareStatement(sql)) {
+
+                ps.setString(1, e.getNumEmpleado());
+                ps.setString(2, e.getNombre());
+                ps.setInt(3, e.getTurno());
+                ps.setBoolean(4, e.isActivo());
+                ps.setInt(5, e.getIdArea());
+                ps.setInt(6, e.getIdEmpleado());
+
+                ps.executeUpdate();
+            }
+    }
+    
+    // Metodo para borrar a un empelado conform su ID 
+    public void eliminar(int id) throws SQLException {
+    String sql = "DELETE FROM Empleados WHERE IdEmpleado = ?";
+
+    try (Connection con = ConexionBD.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, id);
+
+        ps.executeUpdate();
+    }
+}
 }
