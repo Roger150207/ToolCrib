@@ -27,4 +27,18 @@ public class PrestamoDAO {
             cs.execute();
         }
     }
+    
+    public void registrarDevolucion(int idPrestamo, int idArticulo) throws SQLException {
+    String sql = "{call SP_RegistrarDevolucion(?, ?)}";
+
+    try (Connection con = ConexionBD.getConexion();
+         CallableStatement cs = con.prepareCall(sql)) {
+
+        // Le paso el prestamo y el articulo que se esta devolviendo
+        cs.setInt(1, idPrestamo);
+        cs.setInt(2, idArticulo);
+
+        cs.execute();
+    }
+}
 }
