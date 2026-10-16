@@ -10,6 +10,7 @@ package com.toolcrib.dao;
  */
 import com.toolcrib.config.ConexionBD;
 import com.toolcrib.modelo.Articulo;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,5 +44,18 @@ public class ArticuloDAO implements DAO<Articulo>{
         }
 
         return lista;
+    }
+    
+       public void darDeBajaArticulo(int idArticulo) throws SQLException {
+        String sql = "{call SP_DarDeBajaArticulo(?)}";
+
+        try (Connection con = ConexionBD.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+
+            // Le paso los parametros en el mismo orden que el procedimiento
+            cs.setInt(1, idArticulo);
+
+            cs.execute();
+        }
     }
 }
