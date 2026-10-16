@@ -9,6 +9,7 @@ import com.toolcrib.modelo.Articulo;
 import com.toolcrib.modelo.Categoria;
 import com.toolcrib.modelo.Empleado;
 import java.util.List;
+import com.toolcrib.dao.PrestamoDAO;
 
 public class Toolcrib {
 
@@ -45,6 +46,10 @@ public class Toolcrib {
             for (Area ar : areas) {
                 System.out.println(ar);
             }
+            
+            PrestamoDAO prestamoDAO = new PrestamoDAO();
+            prestamoDAO.registrarPrestamo(1, java.sql.Date.valueOf("2026-11-01"), 1, 1);
+            System.out.println("Prestamo registrado con exito");
 
         } catch (Exception e) {
             System.out.println("Error:");
