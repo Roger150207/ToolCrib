@@ -1,0 +1,13 @@
+# Contraseñas locales
+db.properties
+
+# Maven y binarios
+target/
+.idea/
+.vscode/
+nbproject/private/
+*.class
+.DS_Store
+.DS_Store
+.DS_Store
+src/main/resources/db.properties
